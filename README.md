@@ -1,4 +1,5 @@
 # Calculator
 Java Based calculator
-> - Java+Swing UI
+- Java+Swing UI
+> 
 ![Screenshots](/media/ui.png)
