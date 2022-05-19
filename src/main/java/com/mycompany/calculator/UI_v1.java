@@ -384,7 +384,7 @@ public class UI_v1 extends javax.swing.JFrame {
         boolean symbol = false;
         char operator = 'e';
         for(int x = 0; x < aux.length(); x++){
-            char isOperator = 'f';
+            char isOperator;
             if((aux.charAt(x) != '+')&&(aux.charAt(x) != '*')&&(aux.charAt(x) != '-')&&(aux.charAt(x) != '/')&&(aux.charAt(x) != '^')){
                 isOperator = 'f';
             }
@@ -403,14 +403,12 @@ public class UI_v1 extends javax.swing.JFrame {
 
             if(!seccondValue && symbol){
                     value1 = this.GenerateNumber(auxiliar.toString());
-                    showMessageDialog(null, "GENERO VALUE 1 COMO  "+ String.valueOf(value1));
                     symbol = false;
                     seccondValue = true;
                     auxiliar.delete(0,auxiliar.length());
             }
             else if(seccondValue && (x == aux.length()-1)){
                     value2 = this.GenerateNumber(auxiliar.toString());
-                    showMessageDialog(null, "GENERO VALUE 2 COMO  "+ String.valueOf(value2));
             }
             
         }
