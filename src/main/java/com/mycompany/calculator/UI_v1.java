@@ -4,8 +4,7 @@
  */
 package com.mycompany.calculator;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import static javax.swing.JOptionPane.showMessageDialog;
 
 
 /**
@@ -17,8 +16,6 @@ public class UI_v1 extends javax.swing.JFrame {
     /**
      * Creates new form UI_v1
      */
-    ScriptEngineManager sem = new ScriptEngineManager();
-    ScriptEngine se = sem.getEngineByName("JavaScript");
     
     public UI_v1() {
         initComponents();
@@ -354,17 +351,98 @@ public class UI_v1 extends javax.swing.JFrame {
         addNumber("+");
     }//GEN-LAST:event_btn_SumaActionPerformed
 
+    private double GenerateNumber(String source){
+        boolean validator = false;
+        StringBuilder value = new StringBuilder();
+        for(int a = 0; a < source.length(); a++){
+            try{
+                Integer.parseInt(String.valueOf(source.charAt(a)));
+                value.append(String.valueOf(source.charAt(a)));
+            }
+                
+            catch(Exception e){
+                if(source.charAt(a) == '.' && !validator){
+                    value.append(String.valueOf(source.charAt(a)));
+                    validator = true;
+                }
+                else{
+                    showMessageDialog(null, value + " No es un numero! ");
+                    return 0;
+                }
+            }
+                    
+        }
+        return Double.parseDouble(value.toString());
+    }
+
     private void btn_IgualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_IgualActionPerformed
-        // TODO add your handling code here:
-        try{
-            String resultado = (String) se.eval(tfOperacion.getText());
-            Integer.parseInt(resultado);
-            txtResultado.setText(resultado);
-        }catch(Exception e){
+        String aux = this.tfOperacion.getText();
+        double value1 = 0;
+        double value2 = 0;
+        StringBuilder auxiliar = new StringBuilder();
+        boolean seccondValue = false;
+        boolean symbol = false;
+        char operator = 'e';
+        for(int x = 0; x < aux.length(); x++){
+            char isOperator = 'f';
+            if((aux.charAt(x) != '+')&&(aux.charAt(x) != '*')&&(aux.charAt(x) != '-')&&(aux.charAt(x) != '/')&&(aux.charAt(x) != '^')){
+                isOperator = 'f';
+            }
+            else{
+                isOperator = 't';
+            }
+            switch(isOperator){
+                case 't' -> {
+                    operator = aux.charAt(x);
+                    symbol = true;
+                }
+                case 'f' -> {
+                    auxiliar.append(String.valueOf(aux.charAt(x)));
+                }    
+            }
+
+            if(!seccondValue && symbol){
+                    value1 = this.GenerateNumber(auxiliar.toString());
+                    showMessageDialog(null, "GENERO VALUE 1 COMO  "+ String.valueOf(value1));
+                    symbol = false;
+                    seccondValue = true;
+                    auxiliar.delete(0,auxiliar.length());
+            }
+            else if(seccondValue && (x == aux.length()-1)){
+                    value2 = this.GenerateNumber(auxiliar.toString());
+                    showMessageDialog(null, "GENERO VALUE 2 COMO  "+ String.valueOf(value2));
+            }
             
         }
         
-        
+        switch(operator){
+            case '+' -> {
+                
+                this.txtResultado.setText(String.valueOf((value1 + value2)));
+            }
+            case '*' -> {
+                this.txtResultado.setText(String.valueOf((value1 * value2)));
+            }
+            case '-' -> {
+                this.txtResultado.setText(String.valueOf((value1 - value2)));
+            }
+            case '/' -> {
+                if(value2 != 0){
+                    this.txtResultado.setText(String.valueOf((value1 / value2)));
+                }
+                else{
+                    this.txtResultado.setText("indeterminado");
+                }
+            }
+            case '^' -> {
+                this.txtResultado.setText(String.valueOf((Math.pow(value1, value2))));
+            }
+            default -> {
+                    this.txtResultado.setText("Something went wrong");
+            }
+            
+        }
+
     }//GEN-LAST:event_btn_IgualActionPerformed
 
     /**
